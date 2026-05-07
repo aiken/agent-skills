@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第3关-迁移关：根式运算综合</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #f5f5f5;
+            padding: 16px;
+            line-height: 1.6;
+        }
+        .header {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .header h1 { font-size: 20px; color: #7b1fa2; margin-bottom: 6px; }
+        .header .tag { display: inline-block; background: #ff9800; color: #fff; padding: 3px 10px; border-radius: 4px; font-size: 13px; }
+        .header p { font-size: 14px; color: #666; margin-top: 8px; }
+        .card { background: #fff; border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .q-title { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 12px; }
+        .formula-box {
+            background: #fff9c4;
+            border-left: 4px solid #f9a825;
+            padding: 14px;
+            border-radius: 8px;
+            margin: 14px 0;
+            font-family: "Times New Roman", serif;
+            font-size: 16px;
+        }
+        .solution-box { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 14px; border-radius: 8px; margin: 14px 0; }
+        .solution-box h4 { color: #2e7d32; font-size: 15px; margin-bottom: 10px; }
+        .solution-box p, .solution-box div { font-size: 14px; color: #333; margin-bottom: 6px; }
+        .formula-highlight { background: #fff9c4; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #d32f2f; }
+        .score-box { background: #f3e5f5; border: 2px solid #7b1fa2; padding: 14px; border-radius: 8px; margin: 14px 0; }
+        .score-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #ce93d8; font-size: 14px; }
+        .score-item:last-child { border-bottom: none; }
+        .score-pts { background: #7b1fa2; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 13px; font-weight: bold; }
+        .insight-box { background: #e8f5e9; border: 2px solid #4caf50; padding: 14px; border-radius: 8px; margin: 14px 0; }
+        .sqrt { font-family: "Times New Roman", serif; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>第3关 · 迁移关</h1>
+        <span class="tag">仿海淀一模风格</span>
+        <p>根式运算 × 公式综合 × 分步化简<br>限时：10分钟 · 满分10分</p>
+    </div>
+
+    <div class="card">
+        <div class="q-title">综合计算题</div>
+        <p style="font-size:15px; color:#333; line-height:1.8;">
+            已知 a = √3 + 1，b = √3 - 1。求下列各式的值：
+        </p>
+        <div class="formula-box">
+            <b>(1)</b> a² + b²；&nbsp;&nbsp;&nbsp;&nbsp;<b>(2)</b> a/b + b/a；&nbsp;&nbsp;&nbsp;&nbsp;<b>(3)</b> √(a² - 2ab + b²)
+        </div>
+
+        <div class="solution-box">
+            <h4>✅ 完整解答与评分标准</h4>
+
+            <div><b>第(1)问：求 a² + b²（3分）</b></div>
+            <div style="padding-left:10px; margin-top:6px;">
+                <b>方法一：直接展开</b><br>
+                a² = (√3+1)² = 3 + 2√3 + 1 = 4 + 2√3<br>
+                b² = (√3-1)² = 3 - 2√3 + 1 = 4 - 2√3<br>
+                a² + b² = (4+2√3) + (4-2√3) = <span class="formula-highlight">8</span><br>
+                （评分：展开各1分，合并1分）<br><br>
+
+                <b>方法二：用公式 a²+b² = (a+b)² - 2ab</b><br>
+                a+b = (√3+1)+(√3-1) = 2√3<br>
+                ab = (√3+1)(√3-1) = 3-1 = 2<br>
+                a²+b² = (2√3)² - 2×2 = 12-4 = <span class="formula-highlight">8</span>
+            </div>
+
+            <div style="margin-top:14px;"><b>第(2)问：求 a/b + b/a（4分）</b></div>
+            <div style="padding-left:10px; margin-top:6px;">
+                <b>步骤1：通分</b><br>
+                a/b + b/a = (a²+b²)/ab<br><br>
+
+                <b>步骤2：代入</b><br>
+                由(1)知 a²+b² = 8，由上面知 ab = 2<br>
+                ∴ 原式 = 8/2 = <span class="formula-highlight">4</span><br>
+                （评分：通分1分 + 代入a²+b²和ab各1分 + 结果1分）<br><br>
+
+                <b>易错警示：</b>直接代入a=√3+1, b=√3-1到a/b中，分母有理化极容易出错。<br>
+                <span style="color:#d32f2f;">用整体代换 (a²+b²)/ab 是最优策略。</span>
+            </div>
+
+            <div style="margin-top:14px;"><b>第(3)问：求 √(a²-2ab+b²)（3分）</b></div>
+            <div style="padding-left:10px; margin-top:6px;">
+                <b>步骤1：识别公式</b><br>
+                a²-2ab+b² = (a-b)²<br>
+                ∴ √(a²-2ab+b²) = √((a-b)²) = |a-b|<br><br>
+
+                <b>步骤2：计算 a-b</b><br>
+                a-b = (√3+1)-(√3-1) = √3+1-√3+1 = <span class="formula-highlight">2</span><br><br>
+
+                <b>步骤3：去绝对值</b><br>
+                |a-b| = |2| = <span class="formula-highlight">2</span><br>
+                （评分：配方1分 + 计算a-b 1分 + 结果1分）<br><br>
+
+                <b>易错警示：</b>√((a-b)²) 不能直接等于 a-b，必须先写 |a-b|。<br>
+                虽然这里a-b=2是正数，但<b>步骤分</b>要求写绝对值！
+            </div>
+        </div>
+
+        <div class="score-box">
+            <h4>📊 评分标准明细（满分10分）</h4>
+            <div class="score-item">
+                <span><b>第(1)问</b>：展开/公式应用1分 + 代入1分 + 结果1分</span>
+                <span class="score-pts">3分</span>
+            </div>
+            <div class="score-item">
+                <span><b>第(2)问</b>：通分1分 + 整体代换2分 + 结果1分</span>
+                <span class="score-pts">4分</span>
+            </div>
+            <div class="score-item">
+                <span><b>第(3)问</b>：配方/绝对值1分 + 计算a-b 1分 + 结果1分</span>
+                <span class="score-pts">3分</span>
+            </div>
+        </div>
+
+        <div class="insight-box">
+            <b>🔍 关键发现：</b>本题三问层层递进，(2)和(3)都可以用(1)的结果。如果(1)算错，后面全错——这就是中考"连环计"出题套路。
+        </div>
+    </div>
+
+</body>
+</html>

@@ -126,6 +126,104 @@ npx @larksuite/cli api POST /open-apis/task/v2/tasks --data '{
 | `fldxxxx` | Folder |
 | `wiki_xxx` | Wiki node |
 
+## PowerShell JSON & Data Passing Pitfalls
+
+### `--data` JSON Validation Fails Despite Correct Syntax
+
+**Problem:** Even when using single quotes and valid JSON, `--data` frequently returns `invalid JSON format` or `invalid format, expected JSON object`.
+
+**Root cause:** PowerShell's argument parsing and encoding handling subtly corrupt JSON strings before they reach Node.js.
+
+**Reliable workaround — Python + `@file`:**
+```powershell
+# Step 1: Use Python to write a clean UTF-8 JSON file
+.venv\Scripts\python.exe -c "import json; json.dump({'key':'value'}, open('data.json','w',encoding='utf-8'), ensure_ascii=False)"
+
+# Step 2: Reference it with a relative-path @file
+npx @larksuite/cli api POST /open-apis/task/v2/tasks --data "@data.json"
+```
+
+**Critical:** `@file` paths **must be relative** to the current directory. Absolute paths are rejected:
+```powershell
+# BAD — absolute path rejected
+--data "@D:\project\data.json"
+
+# GOOD — cd first, then relative
+D:\project> npx @larksuite/cli api POST ... --data "@data.json"
+```
+
+### `--params` Rejects Empty Query Strings
+
+**Problem:** `task +search --query ""` returns `query is empty and no filter is provided`.
+
+**Workaround:** Use a non-empty keyword or omit `--query` entirely and use the generic API:
+```powershell
+# Search with a keyword
+npx @larksuite/cli task +search --query "contract"
+
+# Or list all via API
+npx @larksuite/cli api GET /open-apis/task/v2/tasks
+```
+
+## Task Management Quirks
+
+### Cannot Set Parent Task via `task.tasks.patch`
+
+**Problem:** `parent_task_guid` is **not** in the `update_fields` whitelist for `task.tasks.patch`.
+
+**Error:**
+```
+Invalid Param 'update_fields'. Only 'summary', 'description', 'due', ... are supported.
+```
+
+**Workaround:** You cannot convert an existing task into a subtask via API. Options:
+1. Create new subtasks under the parent with `task.subtasks.create` (loses original GUID)
+2. Use Feishu App to manually drag-and-drop tasks into parent-child relationships
+
+### `drive +delete` Requires Explicit Confirmation
+
+**Problem:** Deleting files or folders is a high-risk operation.
+
+**Solution:** Always pass `--yes`:
+```powershell
+npx @larksuite/cli drive +delete --file-token "boxxxxx" --type docx --yes
+```
+
+## Drive File Operations
+
+### `drive +upload` Large File Limit (>20MB)
+
+**Problem:** Despite documentation claiming "files > 20MB use multipart upload automatically", uploads still fail with:
+```
+API error: [1061043] file size beyond limit.
+```
+
+**Workarounds:**
+1. Compress the file before upload
+2. Upload large files via Feishu web interface manually
+3. Split into smaller files
+
+### `drive +import` vs `drive +upload`
+
+| Command | Output | Best For |
+|---------|--------|----------|
+| `drive +upload` | Raw file (PDF, DOCX as attachments) | Final deliverables, scans |
+| `drive +import` | Editable Feishu cloud document | Contracts, proposals, reports that need collaborative editing |
+
+**Recommendation:** For any document that will be edited or reviewed in Feishu, use `drive +import --type docx` instead of `drive +upload`.
+
+## Schema Discovery Limitations
+
+### Some Schema Queries Return `Unknown service` or `Unknown method`
+
+**Problem:** `npx @larksuite/cli schema docx.document.create` returns `Unknown service: docx` even though docx operations exist.
+
+**Workaround:** When `schema` fails, use `--help` or trial-and-error with the actual `api` command. Check the CLI's built-in help instead:
+```powershell
+npx @larksuite/cli drive --help
+npx @larksuite/cli task --help
+```
+
 ## Performance Tips
 
 ### Rate Limiting

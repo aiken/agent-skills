@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第2关-精准关：{{知识点名}}（周一至三）</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #f5f5f5;
+            padding: 16px;
+            line-height: 1.6;
+        }
+        .header {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .header h1 { font-size: 20px; color: #d32f2f; margin-bottom: 6px; }
+        .header p { font-size: 14px; color: #666; }
+        .day-badge {
+            display: inline-block;
+            background: #d32f2f;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .question-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .q-title { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 12px; }
+        .formula-box {
+            background: #fff9c4;
+            border-left: 4px solid #f9a825;
+            padding: 14px;
+            border-radius: 8px;
+            margin: 14px 0;
+            font-family: "Times New Roman", serif;
+            font-size: 16px;
+        }
+        .steps-box {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 14px;
+            border-radius: 8px;
+            margin: 14px 0;
+        }
+        .steps-box h4 { color: #7b1fa2; font-size: 15px; margin-bottom: 10px; }
+        .step-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #444;
+        }
+        .step-num {
+            background: #9c27b0;
+            color: #fff;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .solution-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 14px;
+            border-radius: 8px;
+            margin: 14px 0;
+        }
+        .solution-box h4 { color: #2e7d32; font-size: 15px; margin-bottom: 10px; }
+        .solution-box p, .solution-box div { font-size: 14px; color: #333; margin-bottom: 6px; }
+        .check-box {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            padding: 14px;
+            border-radius: 8px;
+            margin: 14px 0;
+        }
+        .check-box h4 { color: #e65100; font-size: 15px; margin-bottom: 10px; }
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #5d4037;
+        }
+        .check-square {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ff9800;
+            border-radius: 3px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .formula-highlight {
+            background: #fff9c4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+        .divider { height: 1px; background: #eee; margin: 16px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>第2关 · 精准关</h1>
+        <p>周一至周三，每天1道 · 同构训练 · 限时5分钟/道<br>
+        <b style="color:#d32f2f;">{{精准关核心提示}}</b></p>
+    </div>
+
+    <!-- ==================== 周一：基础题型 ==================== -->
+    <div class="question-card">
+        <div class="day-badge">周一</div>
+        <div class="q-title">题目：{{周一题目}}</div>
+        <div class="formula-box">{{周一题目公式}}</div>
+
+        <div class="steps-box">
+            <h4>📝 解题思路（孩子照着手绘复现）</h4>
+            <div class="step-item"><span class="step-num">1</span><div>{{周一思路1}}</div></div>
+            <div class="step-item"><span class="step-num">2</span><div>{{周一思路2}}</div></div>
+            <div class="step-item"><span class="step-num">3</span><div>{{周一思路3}}</div></div>
+        </div>
+
+        <div class="solution-box">
+            <h4>✅ 分步解答</h4>
+            <div>{{周一解答}}</div>
+        </div>
+
+        <div class="check-box">
+            <h4>📋 家长判题标记点</h4>
+            <div class="check-item"><div class="check-square"></div><span><b>标记点①：</b>{{周一标记1}}</span></div>
+            <div class="check-item"><div class="check-square"></div><span><b>标记点②：</b>{{周一标记2}}</span></div>
+            <div class="check-item"><div class="check-square"></div><span><b>标记点③：</b>{{周一标记3}}</span></div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==================== 周二：陷阱变式 ==================== -->
+    <div class="question-card">
+        <div class="day-badge">周二</div>
+        <div class="q-title">题目：{{周二题目}}</div>
+        <div class="formula-box">{{周二题目公式}}</div>
+
+        <div class="steps-box">
+            <h4>📝 解题思路</h4>
+            <div class="step-item"><span class="step-num">1</span><div>{{周二思路1}}</div></div>
+            <div class="step-item"><span class="step-num">2</span><div>{{周二思路2}}</div></div>
+            <div class="step-item"><span class="step-num">3</span><div>{{周二思路3}}</div></div>
+        </div>
+
+        <div class="solution-box">
+            <h4>✅ 分步解答</h4>
+            <div>{{周二解答}}</div>
+        </div>
+
+        <div class="check-box">
+            <h4>📋 家长判题标记点</h4>
+            <div class="check-item"><div class="check-square"></div><span><b>标记点①：</b>{{周二标记1}}</span></div>
+            <div class="check-item"><div class="check-square"></div><span><b>标记点②：</b>{{周二标记2}}</span></div>
+            <div class="check-item"><div class="check-square"></div><span><b>标记点③：</b>{{周二标记3}}</span></div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==================== 周三：综合混合 ==================== -->
+    <div class="question-card">
+        <div class="day-badge">周三</div>
+        <div class="q-title">题目：{{周三题目}}</div>
+        <div class="formula-box">{{周三题目公式}}</div>
+
+        <div class="steps-box">
+            <h4>📝 解题思路</h4>
+            <div class="step-item"><span class="step-num">1</span><div>{{周三思路1}}</div></div>
+            <div class="step-item"><span class="step-num">2</span><div>{{周三思路2}}</div></div>
+            <div class="step-item"><span class="step-num">3</span><div>{{周三思路3}}</div></div>
+        </div>
+
+        <div class="solution-box">
+            <h4>✅ 分步解答</h4>
+            <div>{{周三解答}}</div>
+        </div>
+
+        <div class="check-box">
+            <h4>📋 家长判题标记点</h4>
+            <div class="check-item"><div class="check-square"></div><span><b>标记点①：</b>{{周三标记1}}</span></div>
+            <div class="check-item"><div class="check-square"></div><span><b>标记点②：</b>{{周三标记2}}</span></div>
+            <div class="check-item"><div class="check-square"></div><span><b>标记点③：</b>{{周三标记3}}</span></div>
+        </div>
+    </div>
+
+    <div class="header" style="margin-top:8px;">
+        <p style="font-size:13px; color:#888;">📋 三日通关规则：3天对2天 → 解锁迁移关；对1天或0天 → 回退理解关。</p>
+    </div>
+
+</body>
+</html>

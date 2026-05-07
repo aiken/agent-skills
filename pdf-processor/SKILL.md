@@ -5,7 +5,11 @@ description: Process and manipulate PDF files including text extraction, merging
 
 # PDF Processor
 
-This skill enables Kimi to work with PDF files using PowerShell and Python scripts.
+> **Environment**: This skill provides both **PowerShell** (`.ps1`) and **Python** (`.py`) scripts.  
+> When running in **Git Bash**, use the `.py` scripts with standard Bash syntax.  
+> The Python scripts are cross-platform and work identically in Git Bash, PowerShell, and Linux/macOS.
+
+This skill enables Kimi to work with PDF files using Python scripts.
 
 ## Prerequisites
 
@@ -19,41 +23,47 @@ Optional: Install [xpdf](https://www.xpdfreader.com/) for better text extraction
 
 ## Quick Start
 
-### Extract Text from PDF
+### Git Bash / Cross-Platform (Python)
+
+```bash
+# Extract text from PDF
+python "$HOME/.config/agents/skills/pdf-processor/scripts/extract_text.py" document.pdf
+
+# Merge multiple PDFs
+python "$HOME/.config/agents/skills/pdf-processor/scripts/merge_pdfs.py" \
+    file1.pdf file2.pdf file3.pdf -o merged.pdf
+
+# Split PDF into pages
+python "$HOME/.config/agents/skills/pdf-processor/scripts/split_pdf.py" document.pdf \
+    -p 1-5 -o "page_{}.pdf"
+
+# Convert images to PDF
+python "$HOME/.config/agents/skills/pdf-processor/scripts/images_to_pdf.py" \
+    img1.jpg img2.png -o output.pdf
+
+# Get PDF information
+python "$HOME/.config/agents/skills/pdf-processor/scripts/pdf_info.py" document.pdf
+```
+
+### PowerShell (Legacy .ps1)
 
 ```powershell
 & "$env:USERPROFILE\.config\agents\skills\pdf-processor\scripts\extract_text.ps1" `
     -InputFile "document.pdf"
-```
 
-### Merge Multiple PDFs
-
-```powershell
 & "$env:USERPROFILE\.config\agents\skills\pdf-processor\scripts\merge_pdfs.ps1" `
     -InputFiles @("file1.pdf", "file2.pdf", "file3.pdf") `
     -OutputFile "merged.pdf"
-```
 
-### Split PDF into Pages
-
-```powershell
 & "$env:USERPROFILE\.config\agents\skills\pdf-processor\scripts\split_pdf.ps1" `
     -InputFile "document.pdf" `
     -PageRange "1-5" `
     -OutputPattern "page_{0}.pdf"
-```
 
-### Convert Images to PDF
-
-```powershell
 & "$env:USERPROFILE\.config\agents\skills\pdf-processor\scripts\images_to_pdf.ps1" `
     -InputFiles @("img1.jpg", "img2.png") `
     -OutputFile "output.pdf"
-```
 
-### Get PDF Information
-
-```powershell
 & "$env:USERPROFILE\.config\agents\skills\pdf-processor\scripts\pdf_info.ps1" `
     -InputFile "document.pdf"
 ```
@@ -244,6 +254,18 @@ For very large PDFs (100+ MB), consider:
 - Extracting specific pages instead of full text
 - Using streaming approaches with Python
 - Splitting into smaller chunks first
+
+## Python Script Reference
+
+When using Git Bash or any cross-platform shell, use the `.py` scripts with standard CLI arguments:
+
+| Script | Usage Example |
+|--------|--------------|
+| `extract_text.py` | `python extract_text.py document.pdf [-o output.txt] [-p 1-5,7]` |
+| `merge_pdfs.py` | `python merge_pdfs.py file1.pdf file2.pdf -o merged.pdf` |
+| `split_pdf.py` | `python split_pdf.py document.pdf [-p 1-5] [-o page_{}.pdf] [-d outdir]` |
+| `images_to_pdf.py` | `python images_to_pdf.py img1.jpg img2.png -o output.pdf [-q 85]` |
+| `pdf_info.py` | `python pdf_info.py document.pdf` |
 
 ## Limitations
 

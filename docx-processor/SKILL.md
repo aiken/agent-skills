@@ -5,33 +5,37 @@ description: Read, extract, and edit Microsoft Word (.docx) documents without re
 
 # DOCX Processor
 
-This skill enables Kimi to work with Microsoft Word (.docx) files using PowerShell scripts that manipulate the underlying Open XML format directly.
+> **Environment**: This skill provides both **PowerShell** (`.ps1`) and **Python** (`.py`) scripts.  
+> When running in **Git Bash**, use the `.py` scripts with standard Bash syntax.  
+> The Python scripts are cross-platform and work identically in Git Bash, PowerShell, and Linux/macOS.
+
+This skill enables Kimi to work with Microsoft Word (.docx) files using scripts that manipulate the underlying Open XML format directly.
 
 ## Quick Start
 
-### Reading a Document
+### Git Bash / Cross-Platform (Python)
 
-Extract plain text from a .docx file:
+```bash
+# Reading a document
+python "$HOME/.config/agents/skills/docx-processor/scripts/read_docx.py" document.docx
+
+# Extracting with structure
+python "$HOME/.config/agents/skills/docx-processor/scripts/extract_docx.py" document.docx -f list
+
+# Editing a document
+python "$HOME/.config/agents/skills/docx-processor/scripts/edit_docx.py" document.docx \
+    -r "OLD TEXT=NEW TEXT" -r "[Placeholder]=Actual Value" -b
+```
+
+### PowerShell (Legacy .ps1)
 
 ```powershell
 & "$env:USERPROFILE\.config\agents\skills\docx-processor\scripts\read_docx.ps1" `
     -InputFile "document.docx"
-```
 
-### Extracting with Structure
-
-Get numbered paragraphs for analysis:
-
-```powershell
 & "$env:USERPROFILE\.config\agents\skills\docx-processor\scripts\extract_docx.ps1" `
     -InputFile "document.docx" -Format List
-```
 
-### Editing a Document
-
-Replace text in a document:
-
-```powershell
 & "$env:USERPROFILE\.config\agents\skills\docx-processor\scripts\edit_docx.ps1" `
     -InputFile "document.docx" `
     -Replacements @{"OLD TEXT"="NEW TEXT"; "[Placeholder]"="Actual Value"} `
@@ -139,6 +143,17 @@ Remove or replace unwanted text sections:
 & scripts/edit_docx.ps1 -InputFile "doc.docx" -Backup `
     -Replacements @{"Unwanted paragraph text."=""}
 ```
+
+## Python Script Reference
+
+When using Git Bash or any cross-platform shell, use the `.py` scripts with standard CLI arguments:
+
+| Script | Usage Example |
+|--------|--------------|
+| `read_docx.py` | `python read_docx.py document.docx [-o output.txt]` |
+| `extract_docx.py` | `python extract_docx.py document.docx [-o output.txt] [-f text/list/json]` |
+| `edit_docx.py` | `python edit_docx.py document.docx -r "OLD=NEW" [-o output.docx] [-b]` |
+| `edit_docx_advanced.py` | `python edit_docx_advanced.py document.docx -r "OLD=NEW" [-o output.docx] [-b]` |
 
 ## Limitations
 

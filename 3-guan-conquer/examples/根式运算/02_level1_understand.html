@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第1关-理解关：根式运算</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #f5f5f5;
+            padding: 16px;
+            line-height: 1.6;
+        }
+        .header {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .header h1 { font-size: 20px; color: #2196f3; margin-bottom: 6px; }
+        .header p { font-size: 14px; color: #666; }
+        .timer { color: #ff9800; font-weight: bold; }
+        .question-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .q-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .q-num {
+            background: #2196f3;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .options {
+            margin: 12px 0;
+        }
+        .option {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #444;
+        }
+        .answer-section {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 14px;
+            border-radius: 8px;
+            margin-top: 14px;
+        }
+        .answer-section h4 {
+            color: #2e7d32;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .dna-analysis {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #e65100;
+        }
+        .dna-analysis h4 {
+            color: #e65100;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .divider {
+            height: 1px;
+            background: #eee;
+            margin: 16px 0;
+        }
+        .sqrt { font-family: "Times New Roman", serif; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>第1关 · 理解关</h1>
+        <p>目标：识别概念 + 掌握化简法则 + 避开绝对值陷阱<br>限时：每题 <span class="timer">1分钟</span>，共3分钟</p>
+    </div>
+
+    <!-- ========== 第1题：概念识别 ========== -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-num">1</span>概念识别：双重非负性</div>
+        <p style="font-size:14px; color:#666; margin-bottom:10px;">下列各式中，有意义的（在实数范围内）是？</p>
+
+        <div class="options">
+            <div class="option">A. √(-2)</div>
+            <div class="option">B. √0</div>
+            <div class="option" style="background:#e3f2fd; border-color:#2196f3;"><b>C. √(√3-1)</b></div>
+            <div class="option">D. √(1-√3)</div>
+        </div>
+
+        <div class="answer-section">
+            <h4>✅ 正确答案：B 和 C</h4>
+            <p style="font-size:14px; color:#444;">
+                <b>A. √(-2)：</b>被开方数为负，<span style="color:#d32f2f;">无意义</span>。<br>
+                <b>B. √0：</b>0≥0，有意义，且√0 = 0。<br>
+                <b>C. √(√3-1)：</b>∵ √3≈1.732 > 1，∴ √3-1 > 0，<span style="color:#2e7d32;">有意义</span>。<br>
+                <b>D. √(1-√3)：</b>∵ √3≈1.732 > 1，∴ 1-√3 < 0，<span style="color:#d32f2f;">无意义</span>。
+            </p>
+        </div>
+        <div class="dna-analysis">
+            <h4>🧬 错选DNA分析（家长判题用）</h4>
+            <p><b>只选B漏选C：</b>孩子知道"负数不能开方"，但没把√3≈1.732这个常识用起来，不敢判断√3-1的正负。需要强化根式近似值记忆。</p>
+            <p><b>选了A或D：</b>对双重非负性的第一层（被开方数≥0）理解不深，需要回到课本定义重新学习。</p>
+        </div>
+    </div>
+
+    <!-- ========== 第2题：简单应用 ========== -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-num">2</span>简单应用：化简 √((√2-2)²)</div>
+        <p style="font-size:14px; color:#666; margin-bottom:10px;">化简 √((√2-2)²) 的结果是？</p>
+
+        <div class="options">
+            <div class="option">A. √2 - 2</div>
+            <div class="option" style="background:#e3f2fd; border-color:#2196f3;"><b>B. 2 - √2</b></div>
+            <div class="option">C. ±(√2 - 2)</div>
+            <div class="option">D. 2 + √2</div>
+        </div>
+
+        <div class="answer-section">
+            <h4>✅ 正确答案：B</h4>
+            <p style="font-size:14px; color:#444; margin-top:6px;">
+                <b>第一步：用公式 √(a²) = |a|</b><br>
+                √((√2-2)²) = |√2 - 2|<br><br>
+                
+                <b>第二步：判断正负</b><br>
+                ∵ √2 ≈ 1.414 < 2，∴ √2 - 2 < 0<br><br>
+                
+                <b>第三步：去绝对值</b><br>
+                |√2 - 2| = -(√2 - 2) = <span style="color:#d32f2f; font-weight:bold;">2 - √2</span>
+            </p>
+        </div>
+        <div class="dna-analysis">
+            <h4>🧬 错选DNA分析（家长判题用）</h4>
+            <p><b>错选A：</b>孩子直接去掉根号和平方，得到√2-2，结果是个负数！但√((√2-2)²)作为算术平方根，结果必须≥0。这是最常见的错误。</p>
+            <p><b>错选C：</b>混淆了"平方根"和"算术平方根"的概念。√a 永远只表示非负的那个根，不是±。</p>
+            <p><b>错选D：</b>符号判断完全混乱，可能对√2≈1.414没有概念。</p>
+        </div>
+    </div>
+
+    <!-- ========== 第3题：易错辨析 ========== -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-num">3</span>易错辨析：小明的错在哪？</div>
+        <p style="font-size:14px; color:#666; margin-bottom:10px;">小明计算 |1-√3| 时，得到结果 1-√3。请问小明的错误本质是？</p>
+
+        <div class="options">
+            <div class="option">A. 公式记错了，应该是 |a| = a</div>
+            <div class="option" style="background:#e3f2fd; border-color:#2196f3;"><b>B. 没有判断 1-√3 的正负，直接去掉绝对值</b></div>
+            <div class="option">C. √3 应该等于 1.5，所以1-√3 是正的</div>
+            <div class="option">D. 计算正确，答案就是 1-√3</div>
+        </div>
+
+        <div class="answer-section">
+            <h4>✅ 正确答案：B</h4>
+            <p style="font-size:14px; color:#444; margin-top:6px;">
+                <b>正确过程：</b><br>
+                ∵ √3 ≈ 1.732 > 1，∴ 1-√3 < 0<br>
+                ∴ |1-√3| = -(1-√3) = <span style="color:#d32f2f; font-weight:bold;">√3 - 1</span><br><br>
+                
+                小明知道|a|的分段定义，但没有先判断1-√3的正负，直接默认里面是非负的。根本原因是<span style="color:#d32f2f;">根式值常识缺失</span>。
+            </p>
+        </div>
+        <div class="dna-analysis">
+            <h4>🧬 错选DNA分析（家长判题用）</h4>
+            <p><b>错选A：</b>孩子知道绝对值要分段，但记错了分段条件。实际上|a|=a只在a≥0时成立，不是对所有a都成立。</p>
+            <p><b>错选C：</b>这是最危险的！孩子凭感觉给√3估了1.5，实际√3≈1.732。估算不准会导致正负判断全错。</p>
+            <p><b>错选D：</b>孩子完全没有意识到自己错了，可能认为1-√3是合理的"代数式答案"。必须强调：|...|的结果必须≥0。</p>
+        </div>
+    </div>
+
+    <div class="header" style="margin-top:8px;">
+        <p style="font-size:13px; color:#888;">📋 家长判题总纲：3题全对 → 进入第2关；对2题 → 复习错题后进入第2关；对1题或0题 → 重新看核心卡片，明天再做理解关。</p>
+    </div>
+
+</body>
+</html>

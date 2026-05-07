@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第1关-理解关：{{知识点名}}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #f5f5f5;
+            padding: 16px;
+            line-height: 1.6;
+        }
+        .header {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .header h1 { font-size: 20px; color: #2196f3; margin-bottom: 6px; }
+        .header p { font-size: 14px; color: #666; }
+        .timer { color: #ff9800; font-weight: bold; }
+        .question-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .q-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .q-num {
+            background: #2196f3;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .options { margin: 12px 0; }
+        .option {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #444;
+        }
+        .answer-section {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 14px;
+            border-radius: 8px;
+            margin-top: 14px;
+        }
+        .answer-section h4 { color: #2e7d32; font-size: 15px; margin-bottom: 8px; }
+        .dna-analysis {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #e65100;
+        }
+        .dna-analysis h4 { color: #e65100; margin-bottom: 6px; font-size: 14px; }
+        .divider { height: 1px; background: #eee; margin: 16px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>第1关 · 理解关</h1>
+        <p>目标：识别概念 + 掌握法则 + 避开陷阱<br>限时：每题 <span class="timer">1分钟</span>，共3分钟</p>
+    </div>
+
+    <!-- ========== 第1题：概念识别 ========== -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-num">1</span>概念识别：{{题1标题}}</div>
+        <p style="font-size:14px; color:#666; margin-bottom:10px;">{{题1题干}}</p>
+        <div class="options">
+            <div class="option">A. {{选项A}}</div>
+            <div class="option" style="background:#e3f2fd; border-color:#2196f3;"><b>B. {{正确答案}}</b></div>
+            <div class="option">C. {{选项C}}</div>
+            <div class="option">D. {{选项D}}</div>
+        </div>
+        <div class="answer-section">
+            <h4>✅ 正确答案：{{正确答案}}</h4>
+            <p style="font-size:14px; color:#444;">{{正确答案解析}}</p>
+        </div>
+        <div class="dna-analysis">
+            <h4>🧬 错选DNA分析（家长判题用）</h4>
+            <p><b>{{错选模式1}}：</b>{{错选分析1}}</p>
+            <p><b>{{错选模式2}}：</b>{{错选分析2}}</p>
+        </div>
+    </div>
+
+    <!-- ========== 第2题：简单应用 ========== -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-num">2</span>简单应用：{{题2标题}}</div>
+        <p style="font-size:14px; color:#666; margin-bottom:10px;">{{题2题干}}</p>
+        <div class="options">
+            <div class="option">A. {{选项A}}</div>
+            <div class="option" style="background:#e3f2fd; border-color:#2196f3;"><b>B. {{正确答案}}</b></div>
+            <div class="option">C. {{选项C}}</div>
+            <div class="option">D. {{选项D}}</div>
+        </div>
+        <div class="answer-section">
+            <h4>✅ 正确答案：{{正确答案}}</h4>
+            <p style="font-size:14px; color:#444; margin-top:6px;">{{正确答案解析}}</p>
+        </div>
+        <div class="dna-analysis">
+            <h4>🧬 错选DNA分析（家长判题用）</h4>
+            <p><b>{{错选模式1}}：</b>{{错选分析1}}</p>
+            <p><b>{{错选模式2}}：</b>{{错选分析2}}</p>
+            <p><b>{{错选模式3}}：</b>{{错选分析3}}</p>
+        </div>
+    </div>
+
+    <!-- ========== 第3题：易错辨析 ========== -->
+    <div class="question-card">
+        <div class="q-title"><span class="q-num">3</span>易错辨析：{{题3标题}}</div>
+        <p style="font-size:14px; color:#666; margin-bottom:10px;">{{题3题干}}</p>
+        <div class="options">
+            <div class="option">A. {{选项A}}</div>
+            <div class="option" style="background:#e3f2fd; border-color:#2196f3;"><b>B. {{正确答案}}</b></div>
+            <div class="option">C. {{选项C}}</div>
+            <div class="option">D. {{选项D}}</div>
+        </div>
+        <div class="answer-section">
+            <h4>✅ 正确答案：{{正确答案}}</h4>
+            <p style="font-size:14px; color:#444; margin-top:6px;">{{正确答案解析}}</p>
+        </div>
+        <div class="dna-analysis">
+            <h4>🧬 错选DNA分析（家长判题用）</h4>
+            <p><b>{{错选模式1}}：</b>{{错选分析1}}</p>
+            <p><b>{{错选模式2}}：</b>{{错选分析2}}</p>
+            <p><b>{{错选模式3}}：</b>{{错选分析3}}</p>
+        </div>
+    </div>
+
+    <div class="header" style="margin-top:8px;">
+        <p style="font-size:13px; color:#888;">📋 家长判题总纲：3题全对 → 进入第2关；对2题 → 复习错题后进入第2关；对1题或0题 → 重新看核心卡片。</p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{知识点名}} · 核心卡片</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #f5f5f5;
+            padding: 16px;
+            line-height: 1.7;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        h1 { font-size: 20px; text-align: center; margin-bottom: 6px; }
+        .subtitle { font-size: 14px; color: #666; text-align: center; margin-bottom: 12px; }
+        .trigger-box {
+            background: #2196f3; color: #fff;
+            padding: 16px; border-radius: 10px;
+            font-size: 15px; font-weight: bold;
+            text-align: center; margin: 14px 0; line-height: 1.8;
+        }
+        .step-card { border-radius: 10px; padding: 16px; margin: 14px 0; font-size: 15px; }
+        .step1 { background: #f3e5f5; }
+        .step2 { background: #e3f2fd; }
+        .step3 { background: #e8f5e9; }
+        .step-title { font-weight: bold; margin-bottom: 8px; font-size: 16px; }
+        .formula-box {
+            background: #fff9c4;
+            border-left: 4px solid #f9a825;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: "Times New Roman", serif;
+            font-size: 16px;
+        }
+        .error-box { background: #fff3e0; border-left: 4px solid #ff9800; padding: 16px; border-radius: 8px; }
+        .error-box h3 { color: #d32f2f; font-size: 16px; margin-bottom: 12px; }
+        .error-box ol { padding-left: 20px; color: #d32f2f; font-size: 14px; }
+        .error-box li { margin-bottom: 10px; }
+        .meta { text-align: center; font-size: 13px; color: #999; margin-top: 12px; line-height: 1.8; }
+        .highlight { color: #d32f2f; font-weight: bold; }
+        .example {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .example-title { color: #2196f3; font-weight: bold; margin-bottom: 6px; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>{{知识点名}} · 核心卡片</h1>
+        <div class="subtitle">{{知识点副标题}}</div>
+        <div class="trigger-box">
+            看到关键词
+            <span style="font-size:17px; display:block; margin:6px 0;">{{触发关键词}}</span>
+            立刻启动：{{检查清单}}
+        </div>
+    </div>
+
+    <div class="card">
+        <div style="font-size:16px; font-weight:bold; color:#333; margin-bottom:12px;">
+            📌 核心三法则
+        </div>
+        
+        <div class="step-card step1">
+            <div class="step-title" style="color:#7b1fa2;">法则一：{{法则一名称}}</div>
+            <div class="formula-box">{{法则一公式}}</div>
+            <p style="font-size:14px; color:#444; margin-top:6px;">{{法则一解释}}</p>
+        </div>
+
+        <div class="step-card step2">
+            <div class="step-title" style="color:#1565c0;">法则二：{{法则二名称}}</div>
+            <div class="formula-box">{{法则二公式}}</div>
+            <p style="font-size:14px; color:#444; margin-top:6px;">{{法则二解释}}</p>
+        </div>
+
+        <div class="step-card step3">
+            <div class="step-title" style="color:#2e7d32;">法则三：{{法则三名称}}</div>
+            <div class="formula-box">{{法则三公式}}</div>
+            <p style="font-size:14px; color:#444; margin-top:6px;">{{法则三解释}}</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div style="font-size:16px; font-weight:bold; color:#d32f2f; text-align:center; margin-bottom:4px;">
+            ✅ 正确做法示范
+        </div>
+        <div class="example">
+            <div class="example-title">例题：{{例题题目}}</div>
+            <p style="margin-top:8px; line-height:2;">{{分步解答}}</p>
+        </div>
+    </div>
+
+    <div class="card error-box">
+        <h3>⚠ 3个典型错误</h3>
+        <ol>
+            <li><b>{{错误1名称}}：</b>{{错误1描述}}<br>
+            <span style="color:#e65100;">{{错误1正确做法}}</span></li>
+            <li><b>{{错误2名称}}：</b>{{错误2描述}}<br>
+            <span style="color:#e65100;">{{错误2正确做法}}</span></li>
+            <li><b>{{错误3名称}}：</b>{{错误3描述}}<br>
+            <span style="color:#e65100;">{{错误3正确做法}}</span></li>
+        </ol>
+    </div>
+
+    <div class="card">
+        <div style="font-size:16px; font-weight:bold; color:#333; margin-bottom:10px;">
+            🧠 {{数值表标题}}
+        </div>
+        <table style="width:100%; border-collapse:collapse; font-size:14px;">
+            <tr style="background:#f5f5f5;">
+                <td style="padding:8px; border:1px solid #ddd; text-align:center; font-weight:bold;">{{表头1}}</td>
+                <td style="padding:8px; border:1px solid #ddd; text-align:center; font-weight:bold;">{{表头2}}</td>
+                <td style="padding:8px; border:1px solid #ddd; text-align:center; font-weight:bold;">{{表头3}}</td>
+            </tr>
+            <!-- 数据行模板 -->
+            <tr>
+                <td style="padding:8px; border:1px solid #ddd; text-align:center;">{{数据1}}</td>
+                <td style="padding:8px; border:1px solid #ddd; text-align:center;">{{数据2}}</td>
+                <td style="padding:8px; border:1px solid #ddd; text-align:center;">{{数据3}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card">
+        <div class="meta">
+            前置知识：{{前置知识}}<br>
+            后续影响：{{后续影响}}<br>
+            北京中考位置：{{中考位置}}
+        </div>
+    </div>
+
+</body>
+</html>

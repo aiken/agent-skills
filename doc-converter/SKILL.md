@@ -5,6 +5,10 @@ description: Convert documents between various formats (Markdown, DOCX, PDF, HTM
 
 # Document Converter
 
+> **Environment**: This skill provides both **PowerShell** (`.ps1`) and **Python** (`.py`) scripts.  
+> When running in **Git Bash**, use the `.py` scripts with standard Bash syntax.  
+> The Python scripts are cross-platform and work identically in Git Bash, PowerShell, and Linux/macOS.
+
 A robust document conversion tool that converts between Markdown, DOCX, PDF, and HTML formats. Features intelligent LaTeX detection, Chinese language support, and graceful degradation when dependencies are missing.
 
 ## Features
@@ -32,22 +36,33 @@ A robust document conversion tool that converts between Markdown, DOCX, PDF, and
 
 ## Quick Start
 
-### Convert Markdown to PDF
+### Git Bash / Cross-Platform (Python)
+
+```bash
+# Convert Markdown to PDF
+python "$HOME/.config/agents/skills/doc-converter/scripts/convert.py" document.md document.pdf
+
+# Convert DOCX to PDF
+python "$HOME/.config/agents/skills/doc-converter/scripts/convert.py" document.docx document.pdf
+
+# Force XeLaTeX for Chinese documents
+python "$HOME/.config/agents/skills/doc-converter/scripts/convert.py" report.md report.pdf --pdf-engine xelatex
+
+# Check available converters
+python "$HOME/.config/agents/skills/doc-converter/scripts/check_deps.py"
+```
+
+### PowerShell (Legacy .ps1)
+
 ```powershell
 & "$env:USERPROFILE\.config\agents\skills\doc-converter\scripts\convert.ps1" `
     -InputFile "document.md" `
     -OutputFile "document.pdf"
-```
 
-### Convert DOCX to PDF
-```powershell
 & "$env:USERPROFILE\.config\agents\skills\doc-converter\scripts\convert.ps1" `
     -InputFile "document.docx" `
     -OutputFile "document.pdf"
-```
 
-### Check available converters
-```powershell
 & "$env:USERPROFILE\.config\agents\skills\doc-converter\scripts\check_deps.ps1"
 ```
 
@@ -217,6 +232,16 @@ If all methods fail, you can manually open the DOCX in Word and "Save As" PDF.
 
 ### PDF generation is slow
 **Solution**: First conversion downloads LaTeX packages. Subsequent conversions will be faster.
+
+## Python Script Reference
+
+When using Git Bash or any cross-platform shell, use the `.py` scripts with standard CLI arguments:
+
+| Script | Usage Example |
+|--------|--------------|
+| `convert.py` | `python convert.py input.md output.pdf [--pdf-engine xelatex]` |
+| `check_deps.py` | `python check_deps.py` |
+| `batch_convert.py` | `python batch_convert.py *.md -f pdf [-o output_dir] [--pdf-engine auto]` |
 
 ## Limitations
 

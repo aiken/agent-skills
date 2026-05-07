@@ -27,7 +27,7 @@ npx @larksuite/cli doctor
 | Module | Key Commands | Reference |
 |--------|-------------|-----------|
 | **Task** | `task +create`, `task +complete`, `task tasklists tasks list` | [task-guide.md](references/task-guide.md) |
-| **Drive** | `drive +upload`, `drive +download`, `drive +search` | [drive-guide.md](references/drive-guide.md) |
+| **Drive** | `drive +upload`, `drive +download`, `drive +search`, **`drive +import`** | [drive-guide.md](references/drive-guide.md) |
 | **IM** | `im +messages-send`, `im +chat-create` | [im-guide.md](references/im-guide.md) |
 | **Contact** | `contact +search-user`, `contact +get-user` | See CLI `--help` |
 | **Calendar** | `calendar +agenda`, `calendar events instance_view` | See CLI `--help` |
@@ -104,6 +104,24 @@ Or use the API command with inline data:
 npx @larksuite/cli drive files upload --data '{"file_name":"report.pdf"}' --file "report.pdf"
 ```
 
+### Import as Cloud Document (Recommended for Docs)
+
+Convert local `.docx` / `.md` / `.xlsx` into editable Feishu cloud documents. Much more useful than raw upload for contracts, proposals, and reports:
+
+```powershell
+# Import a Word contract as an editable Feishu docx
+npx @larksuite/cli drive +import `
+  --file "Consulting_Agreement.docx" `
+  --folder-token "fldxxxx" `
+  --type docx
+
+# Import a Markdown file as an editable Feishu docx
+npx @larksuite/cli drive +import `
+  --file "report.md" `
+  --folder-token "fldxxxx" `
+  --type docx
+```
+
 ### Search Files
 
 ```powershell
@@ -141,11 +159,21 @@ npx @larksuite/cli im +chat-create `
 
 2. **Single quotes for JSON** — PowerShell expands variables in double quotes. Pass JSON with single quotes: `--data '{"key":"value"}'`.
 
-3. **Line continuations** — Use backtick `` ` `` for multi-line commands.
+3. **`--data` JSON validation fails frequently in PowerShell** — Even with correct single quotes, `--data` often returns `invalid JSON format`. The most reliable workaround is to write JSON to a UTF-8 file with Python and reference it via `@file`:
+   ```powershell
+   .venv\Scripts\python.exe -c "import json; json.dump({'key':'value'}, open('data.json','w',encoding='utf-8'), ensure_ascii=False)"
+   npx @larksuite/cli api POST ... --data "@data.json"
+   ```
 
-4. **File upload filename bug** — `lark-cli` v1.0.23 has a bug where `--file` uploads show as `unknown-file` in Feishu. PR #730 fixes this. Workaround: upload via Feishu App manually, or use Drive web upload API.
+4. **`@file` paths must be relative** — Absolute paths like `@D:\path\data.json` are rejected. `cd` into the working directory first, then use `@data.json`.
 
-5. **Tilde expansion** — PowerShell does NOT expand `~` to `$HOME` in CLI arguments. Use `$env:USERPROFILE` or full paths.
+5. **Line continuations** — Use backtick `` ` `` for multi-line commands.
+
+6. **File upload filename bug** — `lark-cli` v1.0.23 has a bug where `--file` uploads show as `unknown-file` in Feishu. PR #730 fixes this. Workaround: upload via Feishu App manually, or use Drive web upload API.
+
+7. **Large file upload limit** — `drive +upload` fails with `file size beyond limit` (code 1061043) for files >20MB despite auto-multipart claims. Compress or manually upload large files.
+
+8. **Tilde expansion** — PowerShell does NOT expand `~` to `$HOME` in CLI arguments. Use `$env:USERPROFILE` or full paths.
 
 ## Bundled Scripts
 

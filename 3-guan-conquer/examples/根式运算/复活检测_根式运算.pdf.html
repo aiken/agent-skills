@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>复活检测 · 根式运算</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { margin: 0; padding: 0; }
+
+        @page {
+            size: A4;
+            margin: 2cm 2cm 2.5cm 2cm;
+            @bottom-center { content: "第 " counter(page) " 页"; font-size: 10pt; color: #999; }
+        }
+        @page :first {
+            margin: 0;
+            @bottom-center { content: none; }
+        }
+
+        .cover {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+            background: #fafafa;
+            page-break-after: always;
+        }
+        .cover::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 8mm; height: 100%;
+            background: #2c5282;
+        }
+        .cover-content {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 70%;
+        }
+        .cover-tag {
+            display: inline-block;
+            background: #2c5282;
+            color: #fff;
+            padding: 6px 20px;
+            font-size: 12pt;
+            letter-spacing: 2px;
+            margin-bottom: 20mm;
+        }
+        .cover-title {
+            font-family: "Noto Serif SC", "SimSun", serif;
+            font-size: 28pt;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 8mm;
+            line-height: 1.3;
+        }
+        .cover-subtitle {
+            font-size: 14pt;
+            color: #4a5568;
+            margin-bottom: 25mm;
+        }
+        .cover-meta {
+            font-size: 11pt;
+            color: #718096;
+            line-height: 2.2;
+        }
+        .cover-meta .line {
+            display: block;
+            border-bottom: 1px solid #cbd5e0;
+            width: 60%;
+            margin: 8mm auto;
+            padding-bottom: 2mm;
+        }
+
+        .content {
+            font-family: "Noto Serif SC", "SimSun", "STSong", serif;
+            font-size: 12pt;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        h1 {
+            font-family: "Noto Serif SC", "SimHei", sans-serif;
+            font-size: 18pt;
+            font-weight: 700;
+            color: #1a365d;
+            text-align: center;
+            margin-bottom: 1.2cm;
+            padding-bottom: 0.4cm;
+            border-bottom: 2px solid #2c5282;
+        }
+
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8cm;
+            padding: 0.3cm 0.5cm;
+            background: #f7fafc;
+            border-left: 3px solid #2c5282;
+            font-size: 11pt;
+        }
+
+        .question-body {
+            margin-bottom: 0.6cm;
+        }
+        .question-body p {
+            margin-bottom: 0.4cm;
+            text-indent: 2em;
+        }
+        .question-body p.no-indent {
+            text-indent: 0;
+        }
+        .question-body .ask {
+            font-weight: 700;
+            color: #1a365d;
+            margin-top: 0.5cm;
+        }
+
+        .formula-box {
+            background: #fff9c4;
+            border-left: 4px solid #f9a825;
+            padding: 0.5cm 0.8cm;
+            border-radius: 8px;
+            margin: 0.6cm 0;
+            font-family: "Times New Roman", serif;
+            font-size: 14pt;
+        }
+
+        .hint-box {
+            margin: 0.5cm 0;
+            padding: 0.3cm 0.6cm;
+            background: #fffbeb;
+            border-left: 3px solid #f6ad55;
+            font-size: 11pt;
+            color: #744210;
+        }
+
+        .answer-area {
+            margin-top: 0.8cm;
+        }
+        .answer-area h2 {
+            font-family: "SimHei", "SimSun", sans-serif;
+            font-size: 14pt;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 0.4cm;
+            padding-left: 0.3cm;
+            border-left: 4px solid #2c5282;
+        }
+        .answer-lines {
+            border: 1px solid #e2e8f0;
+            padding: 0.4cm 0.6cm;
+            min-height: 14cm;
+        }
+        .answer-line {
+            border-bottom: 1px solid #e2e8f0;
+            height: 1cm;
+        }
+        .answer-line:last-child {
+            border-bottom: none;
+        }
+
+        .parent-page {
+            /* No forced break */
+        }
+        .answer-sheet {
+            background: #f0fff4;
+            border: 1px solid #68d391;
+            padding: 0.6cm;
+            margin-top: 0.4cm;
+        }
+        .answer-sheet h3 {
+            font-size: 12pt;
+            color: #22543d;
+            margin-bottom: 0.3cm;
+        }
+        .answer-sheet ol {
+            padding-left: 1.5em;
+            font-size: 11pt;
+            line-height: 1.9;
+        }
+        .answer-sheet li {
+            margin-bottom: 0.2cm;
+        }
+        .red {
+            color: #c53030;
+            font-weight: 700;
+        }
+
+        pre, table, figure, img, svg, blockquote {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <div class="cover-content">
+        <div class="cover-tag">复 活 检 测</div>
+        <h1 class="cover-title">根式运算</h1>
+        <p class="cover-subtitle">二次根式化简与混合运算变式</p>
+        <div class="cover-meta">
+            <span class="line">适用：初二下学期</span>
+            <span class="line">限时：8 分钟</span>
+            <span class="line">满分：10 分</span>
+            <span style="margin-top: 1cm; display: block; font-size: 10pt; color: #a0aec0;">
+                建议：学习本知识点 7 天后进行<br>
+                家长不提示、不讲解、只判结果
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="content student-page">
+    <h1>复活检测卷（学生用）</h1>
+
+    <div class="info-bar">
+        <span><b>姓名：</b>____________</span>
+        <span><b>日期：</b>____________</span>
+        <span><b>用时：</b>____________ 分钟</span>
+    </div>
+
+    <div class="question-body">
+        <p class="no-indent"><b>题目：</b>计算下列各式：</p>
+        <div class="formula-box">
+            <b>(1)</b> &nbsp;|√3 - 2| + √(2√3 - 3)²<br><br>
+            <b>(2)</b> &nbsp;(√5 + √3)(√5 - √3) - (√2 - 1)²
+        </div>
+        <p class="ask">要求：写出详细的化简步骤，结果保留根式形式。</p>
+    </div>
+
+    <div class="hint-box">
+        <b>提示：</b>√3 ≈ 1.732，√2 ≈ 1.414。先判断正负，再去绝对值。
+    </div>
+
+    <div class="answer-area">
+        <h2>解答区（第1题）</h2>
+        <div class="answer-lines">
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+          </div>
+    </div>
+
+    <div class="answer-area" style="margin-top: 0.6cm;">
+        <h2>解答区（第2题）</h2>
+        <div class="answer-lines">
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+            <div class="answer-line"></div>
+          </div>
+    </div>
+</div>
+
+
+<div class="content parent-page">
+    <h1>家长判题页（请勿提前给孩子看）</h1>
+
+    <div class="info-bar">
+        <span><b>第(1)题答案：</b><span class="red">√3 - 1</span></span>
+        <span><b>第(2)题答案：</b><span class="red">2√2 - 1</span></span>
+    </div>
+
+    <div class="answer-sheet">
+        <h3>判题标准（暗中观察，不打断孩子）</h3>
+        <ol>
+            <li><b>根式值常识（3分）：</b>是否正确判断了 √3≈1.732 与 2 的大小关系（1-√3 为负、2√3-3 为正）。<br>
+            <span style="color: #718096;">正负判断错误 → 后续绝对值全错，扣 3 分。</span></li>
+
+            <li><b>公式应用（3分）：</b>是否正确使用 √(a²) = |a|，而不是直接等于 a。<br>
+            <span style="color: #718096;">漏写绝对值步骤 → 扣 1 分；公式完全记错 → 扣 3 分。</span></li>
+
+            <li><b>计算终点（4分）：</b>最终结果是否化简到最简形式。<br>
+            <span style="color: #718096;">结果写成小数近似值 → 扣 2 分；合并同类项出错 → 扣 2 分。</span></li>
+        </ol>
+    </div>
+
+    <div class="answer-sheet" style="margin-top: 0.6cm; background: #fffaf0; border-color: #f6ad55;">
+        <h3 style="color: #744210;">完整推导过程（供家长参考）</h3>
+
+        <p style="font-weight: 700; margin-bottom: 0.2cm;">第(1)题：</p>
+        <ol style="line-height: 1.8;">
+            <li>判断正负：√3 ≈ 1.732，∴ √3 - 2 < 0，2√3 - 3 ≈ 3.464 - 3 > 0。</li>
+            <li>|√3 - 2| = -(√3 - 2) = <span class="red">2 - √3</span>。</li>
+            <li>√(2√3 - 3)² = |2√3 - 3| = <span class="red">2√3 - 3</span>（∵ 2√3 - 3 > 0）。</li>
+            <li>原式 = (2 - √3) + (2√3 - 3) = <span class="red">√3 - 1</span>。</li>
+        </ol>
+
+        <ol style="line-height: 1.8;">
+            <li>(√5 + √3)(√5 - √3) = (√5)² - (√3)² = 5 - 3 = <span class="red">2</span>（平方差公式）。</li>
+            <li>(√2 - 1)² = (√2)² - 2×√2×1 + 1² = 2 - 2√2 + 1 = <span class="red">3 - 2√2</span>（完全平方）。</li>
+            <li>原式 = 2 - (3 - 2√2) = 2 - 3 + 2√2 = <span class="red">2√2 - 1</span>。</li>
+        </ol>
+    </div>
+
+    <div class="answer-sheet" style="margin-top: 0.6cm; background: #fff5f5; border-color: #fc8181;">
+        <h3 style="color: #742a2a;">结果分级与后续行动</h3>
+        <table style="width: 100%; font-size: 11pt; border-collapse: collapse; margin-top: 0.2cm;">
+            <tr style="border-bottom: 1px solid #fed7d7;">
+                <td style="padding: 0.25cm 0; width: 18%;"><b>8-10 分</b></td>
+                <td style="padding: 0.25cm 0;">对且步骤全 → 该知识点<strong>正式通关</strong>，可进入下一知识点。</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #fed7d7;">
+                <td style="padding: 0.25cm 0;"><b>4-7 分</b></td>
+                <td style="padding: 0.25cm 0;">对但步骤不全 → 记忆型做对，建议<strong>回退精准关</strong>。</td>
+            </tr>
+            <tr>
+                <td style="padding: 0.25cm 0;"><b>0-3 分</b></td>
+                <td style="padding: 0.25cm 0;">错或完全没思路 → <strong>回退到理解关</strong>重新开始。</td>
+            </tr>
+        </table>
+    </div>
+
+    <p style="margin-top: 0.8cm; font-size: 10pt; color: #a0aec0; text-align: center;">
+        家长话术："这道题你试着做，做完给我看看步骤和答案。"（不提示"先判断正负"）
+    </p>
+</div>
+
+</body>
+</html>

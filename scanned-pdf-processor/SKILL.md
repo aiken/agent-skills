@@ -5,6 +5,10 @@ description: Process scanned PDF documents including OCR text extraction, image 
 
 # Scanned PDF Processor
 
+> **Environment**: This skill provides both **PowerShell** (`.ps1`) and **Python** (`.py`) scripts.  
+> When running in **Git Bash**, use the `.py` scripts with standard Bash syntax.  
+> The Python scripts are cross-platform and work identically in Git Bash, PowerShell, and Linux/macOS.
+
 This skill enables Kimi to work with **scanned PDF documents** and image-based PDFs using OCR, image conversion, and visual analysis techniques.
 
 ## Overview
@@ -36,27 +40,35 @@ Optional but recommended:
 
 ## Quick Start
 
-### Convert PDF to Images
+### Git Bash / Cross-Platform (Python)
+
+```bash
+# Convert PDF to images
+python "$HOME/.config/agents/skills/scanned-pdf-processor/scripts/pdf_to_images.py" \
+    scanned_document.pdf -o ./images -d 300
+
+# Extract text with OCR
+python "$HOME/.config/agents/skills/scanned-pdf-processor/scripts/ocr_extract.py" \
+    scanned_document.pdf -o extracted_text.txt -l chi_sim+eng
+
+# Analyze scanned document
+python "$HOME/.config/agents/skills/scanned-pdf-processor/scripts/analyze_scanned.py" \
+    scanned_document.pdf -m visual
+```
+
+### PowerShell (Legacy .ps1)
 
 ```powershell
 & "$env:USERPROFILE\.config\agents\skills\scanned-pdf-processor\scripts\pdf_to_images.ps1" `
     -InputFile "scanned_document.pdf" `
     -OutputDir "./images" `
     -Dpi 300
-```
 
-### Extract Text with OCR
-
-```powershell
 & "$env:USERPROFILE\.config\agents\skills\scanned-pdf-processor\scripts\ocr_extract.ps1" `
     -InputFile "scanned_document.pdf" `
     -OutputFile "extracted_text.txt" `
     -Language "chi_sim+eng"
-```
 
-### Analyze Scanned Document
-
-```powershell
 & "$env:USERPROFILE\.config\agents\skills\scanned-pdf-processor\scripts\analyze_scanned.ps1" `
     -InputFile "scanned_document.pdf" `
     -Mode "visual"
@@ -340,6 +352,16 @@ Convert scanned PDFs for AI vision analysis:
 # Step 2: Use images with vision-capable AI
 # The images in ./pdf_images/ can be analyzed by AI models
 ```
+
+## Python Script Reference
+
+When using Git Bash or any cross-platform shell, use the `.py` scripts with standard CLI arguments:
+
+| Script | Usage Example |
+|--------|--------------|
+| `pdf_to_images.py` | `python pdf_to_images.py document.pdf [-o ./images] [-d 300] [-f png/jpg/tiff] [-p 1-5]` |
+| `ocr_extract.py` | `python ocr_extract.py document.pdf [-o text.txt] [-l chi_sim+eng] [-p 1-5]` |
+| `analyze_scanned.py` | `python analyze_scanned.py document.pdf [-m visual/text/full/structure] [-o ./analysis]` |
 
 ## Limitations
 
