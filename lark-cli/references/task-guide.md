@@ -64,9 +64,17 @@ npx @larksuite/cli api POST /open-apis/task/v2/tasks --data '{
 ### Update a Task
 
 ```powershell
+# Update title
 npx @larksuite/cli task +update --task-id "guid" --summary "New title"
+
+# Update due date
 npx @larksuite/cli task +update --task-id "guid" --due "+7d"
+
+# Update description (supports markdown)
+npx @larksuite/cli task +update --task-id "guid" --description "Updated info..."
 ```
+
+**Note:** `task +update` uses `--task-id` (not `--task-guid`). For updating `description`, the string can be multi-line markdown. On Windows, passing long descriptions directly in PowerShell is fragile — use the Python subprocess pattern (see known-issues.md) or write to a file and use `--description (Get-Content desc.txt -Raw)`.
 
 ### Complete / Reopen
 
@@ -78,8 +86,16 @@ npx @larksuite/cli task +reopen --task-id "guid"
 ### Get Task Details
 
 ```powershell
-npx @larksuite/cli task tasks get --task-id "guid" --format pretty
+# Shortcut command
+npx @larksuite/cli task tasks get --params '{"task_guid":"guid-xxxx"}'
+
+# Or via generic API
+npx @larksuite/cli api GET /open-apis/task/v2/tasks/guid-xxxx
 ```
+
+**Response includes:** `description`, `attachments` (file list with `file_token`, `name`, `url`), `subtask_count`, `parent_task_guid`, `tasklists`, etc.
+
+**Note:** Task attachments contain a temporary `url` (valid for 3 minutes, max 3 downloads). To persistently access an attachment, use its `file_token` with Drive APIs.
 
 ### Search Tasks
 

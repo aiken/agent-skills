@@ -267,6 +267,37 @@ When using Git Bash or any cross-platform shell, use the `.py` scripts with stan
 | `images_to_pdf.py` | `python images_to_pdf.py img1.jpg img2.png -o output.pdf [-q 85]` |
 | `pdf_info.py` | `python pdf_info.py document.pdf` |
 
+## PDF to Images
+
+Convert PDF pages to image files (PNG/JPEG) for preview, OCR, or presentation workflows.
+
+### Using Node.js pdf2pic (Windows/PowerShell)
+
+```powershell
+# Requires: npm install pdf2pic
+$npx pdf2pic -i document.pdf -o ./pages/ -f png
+```
+
+### Using Python pdf2image (Cross-platform)
+
+```bash
+# Requires: pip install pdf2image
+python -c "
+from pdf2image import convert_from_path
+images = convert_from_path('document.pdf', dpi=200)
+for i, img in enumerate(images):
+    img.save(f'page_{i+1:02d}.png', 'PNG')
+"
+```
+
+**Dependencies:** On Windows, also install [Poppler](https://github.com/oschwartz10612/poppler-windows/releases) and add `bin/` to PATH.
+
+### Use Cases
+
+- Generate slide thumbnails from a PDF deck
+- Extract pages for image-based OCR (when text extraction fails)
+- Create page-by-page previews for review workflows
+
 ## Limitations
 
 - **Text extraction accuracy** depends on PDF encoding; scanned documents (images) require OCR

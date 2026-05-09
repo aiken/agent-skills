@@ -1,6 +1,6 @@
 ---
 name: doc-converter
-description: Convert documents between various formats (Markdown, DOCX, PDF, HTML) with intelligent dependency detection and Chinese language support. Gracefully handles missing LaTeX by providing fallback options.
+description: Convert documents between various formats (Markdown, DOCX, PDF, HTML) with intelligent dependency detection and Chinese language support. Gracefully handles missing LaTeX by providing fallback options. Also covers browser headless PDF generation (Edge/Chrome) for client-facing documents. Use when Kimi needs to: (1) convert between document formats, (2) generate PDF from Markdown/HTML using pandoc, LaTeX, or browser headless mode, (3) produce client-facing PDFs where local file paths must not leak.
 ---
 
 # Document Converter
@@ -242,6 +242,49 @@ When using Git Bash or any cross-platform shell, use the `.py` scripts with stan
 | `convert.py` | `python convert.py input.md output.pdf [--pdf-engine xelatex]` |
 | `check_deps.py` | `python check_deps.py` |
 | `batch_convert.py` | `python batch_convert.py *.md -f pdf [-o output_dir] [--pdf-engine auto]` |
+
+## Browser Headless PDF Generation (Windows)
+
+When generating client-facing PDFs from Markdown via **pandoc → HTML → Edge headless**, follow these security and quality rules strictly.
+
+### Security Checklist
+
+| # | Rule | Rationale |
+|---|------|-----------|
+| 1 | `--embed-resources` in pandoc | Inlines CSS/images so the temporary HTML has no external file references |
+| 2 | `--no-pdf-header-footer` in Edge | Prevents Edge from printing the source URL (`file:///D:/...`) in the PDF header |
+| 3 | Delete temp HTML after generation | Eliminates the source file that contains local paths |
+| 4 | Scan PDF for path leakage | Run `findstr`/`strings` on the PDF to confirm no `file://`, `ops_sts`, `pdf-style`, or local usernames remain |
+| 5 | Never expose `D:/coding/...` in replies | Local absolute paths must never appear in user-facing output |
+
+### Recommended Pipeline
+
+```powershell
+# 1. Markdown → self-contained HTML
+pandoc input.md -o _tmp.html --standalone --embed-resources --css=pdf-style.css --metadata title="Doc Title"
+
+# 2. HTML → PDF via Edge headless
+$edge = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+Start-Process $edge -ArgumentList "--headless","--disable-gpu","--no-pdf-header-footer","--print-to-pdf=output.pdf",(Resolve-Path _tmp.html) -Wait
+
+# 3. Verify no path leakage
+$leaked = Select-String -Path output.pdf -Pattern "file://|ops_sts|pdf-style|D:\\coding" -Quiet
+if ($leaked) { Write-Error "PDF contains local paths!"; exit 1 }
+
+# 4. Cleanup
+Remove-Item _tmp.html -Force
+```
+
+### Print CSS Tips for Complex Tables
+
+When PDF tables have long model names or code blocks that cause overflow:
+
+```css
+table { font-size: 7.5pt; margin: 8px 0; page-break-inside: auto; }
+th, td { border: 1px solid #bbb; padding: 4px 6px; text-align: left; vertical-align: top; }
+td code { white-space: nowrap; }  /* prevent model names from wrapping */
+tr { page-break-inside: avoid; }
+```
 
 ## Limitations
 

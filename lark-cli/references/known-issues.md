@@ -180,13 +180,63 @@ Invalid Param 'update_fields'. Only 'summary', 'description', 'due', ... are sup
 1. Create new subtasks under the parent with `task.subtasks.create` (loses original GUID)
 2. Use Feishu App to manually drag-and-drop tasks into parent-child relationships
 
-### `drive +delete` Requires Explicit Confirmation
+### `drive +delete` Flag Changes (v1.0.25+)
 
-**Problem:** Deleting files or folders is a high-risk operation.
+**Problem:** Older versions accepted positional arguments like `drive +delete token`. v1.0.25+ requires explicit flags.
 
-**Solution:** Always pass `--yes`:
+**Solution:** Use `--file-token` + `--type` + `--yes`:
 ```powershell
+# BAD — positional args no longer supported
+npx @larksuite/cli drive +delete "boxxxxx"
+
+# GOOD
 npx @larksuite/cli drive +delete --file-token "boxxxxx" --type docx --yes
+```
+
+### `drive +import` Flag Changes (v1.0.25+)
+
+**Problem:** `--data @json` was removed. Now uses direct flags.
+
+**Solution:**
+```powershell
+# BAD — old syntax
+npx @larksuite/cli drive +import --data @import.json
+
+# GOOD — v1.0.25+
+npx @larksuite/cli drive +import `
+  --file "contract.docx" `
+  --folder-token "fldxxxx" `
+  --name "Contract V2" `
+  --type docx
+```
+
+### Document Replace Workflow
+
+When updating a document that is referenced elsewhere (task descriptions, indices, etc.), follow this sequence to avoid broken links:
+
+1. **Import the new version** — record the returned `token` and `url`
+2. **Update all references** — task descriptions, indices, emails, etc.
+3. **Delete the old version** — only after confirming the new one is accessible
+
+```powershell
+# Step 1: Import new version
+$import = npx @larksuite/cli drive +import `
+  --file "contract_v2.docx" `
+  --folder-token "fldxxxx" `
+  --name "Contract (Latest)" `
+  --type docx | ConvertFrom-Json
+$newToken = $import.data.token
+$newUrl   = $import.data.url
+
+# Step 2: Update references (example: task description)
+npx @larksuite/cli task +update `
+  --task-id "guid-xxxx" `
+  --description "New doc: $newUrl"
+
+# Step 3: Delete old version
+npx @larksuite/cli drive +delete `
+  --file-token "OLD_TOKEN" `
+  --type docx --yes
 ```
 
 ## Drive File Operations
@@ -223,6 +273,37 @@ API error: [1061043] file size beyond limit.
 npx @larksuite/cli drive --help
 npx @larksuite/cli task --help
 ```
+
+## PowerShell Subprocess Best Practice (Windows)
+
+When lark-cli flags are complex or contain special characters, the most reliable approach on Windows is to invoke via Python `subprocess` rather than direct PowerShell:
+
+```python
+# save as run_lark.py
+import subprocess, json, os
+os.chdir(r'D:\project')
+
+def lark(*args):
+    result = subprocess.run(
+        ['npx', '@larksuite/cli'] + list(args),
+        capture_output=True, text=True, encoding='utf-8', shell=True
+    )
+    return json.loads(result.stdout) if result.stdout else {}
+
+# Example: list folder files
+data = lark('drive', 'files', 'list', '--params', '@list_params.json')
+print(data['data']['files'])
+
+# Example: import document
+data = lark('drive', '+import',
+    '--file', 'contract.docx',
+    '--folder-token', 'fldxxxx',
+    '--name', 'Contract',
+    '--type', 'docx')
+print(data['data']['url'])
+```
+
+**Why:** This completely bypasses PowerShell's argument parsing, splatting (`@`), and line-continuation quirks. The only requirement is that JSON parameter files must still use relative paths for `@file` references.
 
 ## Performance Tips
 

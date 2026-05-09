@@ -79,16 +79,45 @@ npx @larksuite/cli drive +move --file-token "boxxxxx" --folder-token "fldyyyy"
 ### Delete a File
 
 ```powershell
-npx @larksuite/cli drive +delete --file-token "boxxxxx"
+npx @larksuite/cli drive +delete --file-token "boxxxxx" --type docx --yes
 ```
+
+**Required for v1.0.25+:** `--file-token` (not positional), `--type`, and `--yes` for confirmation.
+
+### List Folder Contents
+
+```powershell
+# Write params to a JSON file first
+.venv\Scripts\python.exe -c "import json; json.dump({'folder_token':'fldxxxx'}, open('params.json','w'))"
+
+npx @larksuite/cli drive files list --params @params.json
+```
+
+**Note:** `drive files list` does NOT accept `--folder-token` as a direct flag. You must pass it via `--params @json`.
 
 ## Import/Export
 
 ### Import Local File as Cloud Document
 
+**Recommended flags (v1.0.25+):**
+
 ```powershell
-npx @larksuite/cli drive +import --file "local.docx" --type docx --folder-token "fldxxxx"
+npx @larksuite/cli drive +import `
+  --file "local.docx" `
+  --folder-token "fldxxxx" `
+  --name "Display Name in Drive" `
+  --type docx
 ```
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--file` | Yes | Local file path |
+| `--folder-token` | No | Target folder token (omit for root) |
+| `--name` | No | Display name in Drive (defaults to filename without extension) |
+| `--type` | No | `docx`, `sheet`, `bitable` |
+
+**Returns:** `token`, `url`, `ticket` (for async polling). The `ticket` can be used with `drive +task_result` if the import is not immediately ready.
+
 
 ### Export Cloud Document
 

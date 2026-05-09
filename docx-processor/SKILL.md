@@ -155,11 +155,92 @@ When using Git Bash or any cross-platform shell, use the `.py` scripts with stan
 | `edit_docx.py` | `python edit_docx.py document.docx -r "OLD=NEW" [-o output.docx] [-b]` |
 | `edit_docx_advanced.py` | `python edit_docx_advanced.py document.docx -r "OLD=NEW" [-o output.docx] [-b]` |
 
+## Advanced Usage with python-docx
+
+For complex formatting (fonts, paragraph styles, tables, page margins), use `python-docx` instead of direct XML editing.
+
+### Prerequisites
+
+```bash
+pip install python-docx
+```
+
+### Generate a Formatted Document (Chinese Contract Example)
+
+```python
+from docx import Document
+from docx.shared import Pt, Inches, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
+from docx.oxml.ns import qn
+
+def set_font(run, font_name='宋体', size=10.5, bold=False):
+    run.font.name = font_name
+    run._element.rPr.rFonts.set(qn('w:eastAsia'), font_name)
+    run.font.size = Pt(size)
+    run.font.bold = bold
+
+doc = Document()
+sections = doc.sections[0]
+sections.top_margin = Inches(1)
+sections.bottom_margin = Inches(1)
+sections.left_margin = Inches(1.2)
+sections.right_margin = Inches(1.2)
+
+# Title
+p = doc.add_paragraph()
+p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+run = p.add_run('Document Title')
+run.font.name = '黑体'
+run._element.rPr.rFonts.set(qn('w:eastAsia'), '黑体')
+run.font.size = Pt(22)
+run.font.bold = True
+
+# Body with first-line indent and 1.5 line spacing
+p = doc.add_paragraph()
+run = p.add_run('Body text content...')
+set_font(run, '宋体', 10.5)
+p.paragraph_format.first_line_indent = Inches(0.45)
+p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.ONE_POINT_FIVE
+
+doc.save('output.docx')
+```
+
+### Batch Text Replacement (Format-Preserving)
+
+Safer than XML editing for formatted documents:
+
+```python
+from docx import Document
+
+doc = Document('contract.docx')
+for para in doc.paragraphs:
+    for run in para.runs:
+        if 'OLD TEXT' in run.text:
+            run.text = run.text.replace('OLD TEXT', 'NEW TEXT')
+doc.save('contract_updated.docx')
+```
+
+**Why `run`-level replacement:** In Word, formatting (bold, color, font) is applied at the `run` level, not the paragraph level. Replacing at the paragraph level (`para.text = ...`) destroys all formatting. Always iterate `para.runs` when format must be preserved.
+
+### Add a Styled Table
+
+```python
+table = doc.add_table(rows=2, cols=2)
+table.style = 'Table Grid'
+table.autofit = False
+table.columns[0].width = Inches(3.2)
+table.columns[1].width = Inches(3.2)
+
+table.cell(0, 0).text = 'Party A'
+table.cell(0, 1).text = 'Party B'
+```
+
 ## Limitations
 
-- **Text-only**: Works with text content. Complex formatting, tables, images are preserved but not directly editable via text replacement.
-- **String matching**: Replacements are literal string matches. Regex is not supported.
+- **Text-only (XML scripts)**: Works with text content. Complex formatting, tables, images are preserved but not directly editable via text replacement.
+- **String matching (XML scripts)**: Replacements are literal string matches. Regex is not supported.
 - **XML encoding**: Replacement text should not contain XML special characters (`<`, `>`, `&`) as they are automatically escaped.
+- **python-docx**: Cannot edit existing tables or headers/footers directly. For those, use the XML scripts or recreate the document.
 
 ## Troubleshooting
 
