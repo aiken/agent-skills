@@ -254,26 +254,32 @@ When generating client-facing PDFs from Markdown via **pandoc → HTML → Edge 
 | 1 | `--embed-resources` in pandoc | Inlines CSS/images so the temporary HTML has no external file references |
 | 2 | `--no-pdf-header-footer` in Edge | Prevents Edge from printing the source URL (`file:///D:/...`) in the PDF header |
 | 3 | Delete temp HTML after generation | Eliminates the source file that contains local paths |
-| 4 | Scan PDF for path leakage | Run `findstr`/`strings` on the PDF to confirm no `file://`, `ops_sts`, `pdf-style`, or local usernames remain |
+| 4 | Scan PDF for path leakage | Use `verify_pdf.py` (pdfminer.six) to extract text and check for forbidden patterns. Do NOT use `findstr` or `Select-String` on PDF binary — they cannot parse the format |
 | 5 | Never expose `D:/coding/...` in replies | Local absolute paths must never appear in user-facing output |
 
-### Recommended Pipeline
+### Recommended Pipeline (Skill-level Fix)
+
+**Do NOT hand-craft Edge command lines.** Use the provided wrapper scripts so cache-safe flags and leak checks are enforced automatically.
 
 ```powershell
 # 1. Markdown → self-contained HTML
 pandoc input.md -o _tmp.html --standalone --embed-resources --css=pdf-style.css --metadata title="Doc Title"
 
-# 2. HTML → PDF via Edge headless
-$edge = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-Start-Process $edge -ArgumentList "--headless","--disable-gpu","--no-pdf-header-footer","--print-to-pdf=output.pdf",(Resolve-Path _tmp.html) -Wait
+# 2. HTML → PDF via skill wrapper (auto-handles --user-data-dir, --incognito, --disk-cache-size=1)
+.\doc-converter\scripts\edge_to_pdf.ps1 -InputHtml _tmp.html -OutputPdf output.pdf
 
-# 3. Verify no path leakage
-$leaked = Select-String -Path output.pdf -Pattern "file://|ops_sts|pdf-style|D:\\coding" -Quiet
-if ($leaked) { Write-Error "PDF contains local paths!"; exit 1 }
+# 3. Verify content + no path leakage via skill wrapper (uses pdfminer.six, NOT findstr)
+python .\doc-converter\scripts\verify_pdf.py output.pdf `
+    --contains "expected text" `
+    --leak-check `
+    --forbid "ops_sts" "pdf-style"
+if ($LASTEXITCODE -ne 0) { Write-Error "PDF verification failed!"; exit 1 }
 
 # 4. Cleanup
 Remove-Item _tmp.html -Force
 ```
+
+> **Why wrappers?** The old inline command (`Start-Process $edge ...`) omitted `--user-data-dir` and `--incognito`, causing Edge to reuse cached content when the browser was already running. The wrapper bakes in all anti-cache flags so agents cannot forget them. `verify_pdf.py` replaces unreliable `Select-String -Path output.pdf` which fails silently on PDF binary.
 
 ### Print CSS Tips for Complex Tables
 
